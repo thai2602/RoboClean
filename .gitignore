@@ -1,0 +1,41 @@
+# Next.js / Node
+node_modules/
+.next/
+out/
+build/
+.env*.local
+.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.vercel
+
+# Maven / Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+.metadata
+.classpath
+.project
+.settings/
+.springBeans
+.factorypath
+
+# IDEs and System files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# H2 Database file
+*.mv.db
+*.trace.db
+frontend/AGENTS.md
+frontend/CLAUDE.md
