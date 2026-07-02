@@ -144,6 +144,7 @@ export const Hero = () => {
                   alt="RoboClean Pro Smart Vacuum"
                   fill
                   priority
+                  sizes="(max-width: 768px) 300px, 450px"
                   className="object-cover scale-95 transition-transform duration-500 hover:scale-100"
                 />
               </div>
