@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧹 RoboClean Frontend - Next.js Landing Page
 
-## Getting Started
+Đây là phần giao diện người dùng (Client) của dự án **RoboClean** được xây dựng bằng Next.js 16.x (App Router), React 19 và Tailwind CSS v4.
 
-First, run the development server:
+---
 
+## 🚀 Các Tính Năng Giao Diện
+* **Scrollytelling & Parallax Hero**: Hoạt ảnh cuộn mượt mà dùng Framer Motion.
+* **Zustand Store**: Quản lý Giỏ hàng (Cart), danh sách yêu thích (Wishlist) và lịch sử đã xem (Recently Viewed) đồng bộ LocalStorage.
+* **React Portal CartDrawer**: Gắn giỏ hàng trực tiếp vào `document.body` để khắc phục lỗi xếp chồng (Stacking Context) trong trình duyệt Chrome.
+* **AI Chat Advisor Bubble**: Giao diện chat nổi có phân tích và định dạng văn bản in đậm, ngắt dòng tự động.
+* **Telemetry Event Hook**: Ghi nhận hành vi click/scroll của khách hàng gửi về API của Backend.
+
+---
+
+## 🏃 Hướng Dẫn Khởi Chạy
+
+### 1. Cài đặt thư viện
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Chạy môi trường thử nghiệm (Development)
+```bash
+npm run dev
+```
+* Mở trình duyệt tại: `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Kiểm tra và Chạy bản tối ưu hiệu năng (Production)
+Để có kết quả đo đạc tốc độ tải trang (Lighthouse) chuẩn xác nhất, bạn bắt buộc phải kiểm tra trên môi trường biên dịch tối ưu:
+```bash
+# Biên dịch mã nguồn tối ưu
+npm run build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Khởi chạy máy chủ Production
+npm run start
+```
+* Mở trình duyệt đo Lighthouse tại: `http://localhost:3000`
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ⚙️ Biến Môi Trường (`.env`)
+Tạo tệp `.env` tại thư mục này nếu bạn cần gọi API Backend ở địa chỉ khác:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8080/api/v1
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📚 Thông tin Kiến trúc & Triển khai
+Xem hướng dẫn cài đặt cơ sở dữ liệu PostgreSQL, cấu hình khóa OpenRouter AI của Backend và cách deploy toàn diện lên Vercel/Render tại:
+* 📑 [Tệp tài liệu gốc README.md của dự án](../README.md)
