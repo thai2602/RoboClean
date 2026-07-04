@@ -135,6 +135,7 @@ export const Hero = () => {
                 duration: 4.5,
                 repeat: Infinity,
                 ease: "easeInOut",
+                delay: 1.5, // Delay float loop to let the LCP paint stabilize
               }}
               className="relative h-[280px] w-[280px] sm:h-[400px] sm:w-[400px] lg:h-[380px] lg:w-[380px] xl:h-[450px] xl:w-[450px] overflow-hidden rounded-full border border-border bg-gradient-to-tr from-brand-primary/10 to-brand-secondary/10 p-6 dark:border-white/5 shadow-2xl"
             >
