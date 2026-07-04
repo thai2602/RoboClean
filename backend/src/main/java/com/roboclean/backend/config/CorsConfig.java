@@ -17,16 +17,11 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                org.springframework.web.servlet.config.annotation.CorsRegistration registration = registry.addMapping("/**")
+                registry.addMapping("/**")
+                        .allowedOriginPatterns(allowedOrigins.split(","))
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*");
-                
-                if ("*".equals(allowedOrigins.trim())) {
-                    registration.allowedOrigins("*");
-                } else {
-                    registration.allowedOrigins(allowedOrigins.split(","));
-                    registration.allowCredentials(true);
-                }
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }
