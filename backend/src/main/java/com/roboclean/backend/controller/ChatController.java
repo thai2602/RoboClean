@@ -16,8 +16,11 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping({"/api/v1/chat", "/chat"})
@@ -31,6 +34,9 @@ public class ChatController {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    // In-memory multi-turn chat history cache grouped by sessionId
+    private final Map<String, List<Map<String, String>>> chatHistories = new ConcurrentHashMap<>();
+
     @PostMapping
     public ResponseEntity<Map<String, Object>> chat(@Valid @RequestBody ChatMessageDto chatMessageDto) {
         String botReply;
@@ -40,7 +46,7 @@ public class ChatController {
             botReply = getFallbackReply(chatMessageDto.getMessage());
         } else {
             try {
-                botReply = callOpenRouterApi(chatMessageDto.getMessage());
+                botReply = callOpenRouterApi(chatMessageDto.getSessionId(), chatMessageDto.getMessage());
             } catch (Exception e) {
                 System.err.println("[Chat] Failed calling OpenRouter API: " + e.getMessage());
                 botReply = getFallbackReply(chatMessageDto.getMessage());
@@ -57,15 +63,29 @@ public class ChatController {
         return ResponseEntity.ok(response);
     }
 
-    private String callOpenRouterApi(String userMessage) throws Exception {
-        String systemPrompt = "Bạn là trợ lý ảo tư vấn bán hàng của hãng RoboClean. "
-                + "Trả lời ngắn gọn, thân thiện, lịch sự bằng Tiếng Việt dựa trên các thông tin sau:\n"
-                + "- RoboClean Pro Max X2: Giá 12.990.000đ (Gốc 14.990.000đ), lực hút 6000Pa, pin 5200mAh (dùng 180 phút), trạm sạc đa năng tự làm sạch, tự đổ rác túi 3L, giặt sấy giẻ khí nóng 55°C.\n"
-                + "- RoboClean Standard S1: Giá 7.990.000đ (Gốc 9.990.000đ), lực hút 4000Pa, pin 3200mAh (dùng 120 phút), dock sạc cơ bản tự gom rác túi 2L.\n"
-                + "- Trạm Sạc RoboDock (bán lẻ phụ kiện nâng cấp): Giá 4.990.000đ.\n"
-                + "- Ưu đãi: Đăng ký email nhận mã giảm giá 10% cho đơn hàng đầu tiên.\n"
-                + "- Chính sách: Bảo hành 24 tháng chính hãng, lỗi 1 đổi 1 trong 30 ngày, miễn phí giao hàng toàn quốc.\n"
-                + "Hãy trả lời câu hỏi sau của khách hàng dưới 3 câu ngắn gọn. Đừng bịa đặt thông số nằm ngoài mô tả ở trên.";
+    private String callOpenRouterApi(String sessionId, String userMessage) throws Exception {
+        String systemPrompt = "Bạn là RoboClean AI Advisor - chuyên gia tư vấn bán hàng cao cấp, thông minh và thân thiện của hãng robot hút bụi RoboClean.\n"
+                + "Nhiệm vụ của bạn là lắng nghe, giải đáp thắc mắc và thuyết phục khách hàng mua sản phẩm phù hợp nhất với nhu cầu của họ.\n\n"
+                + "Dưới đây là thông tin chính xác về các sản phẩm và dịch vụ của RoboClean:\n"
+                + "1. RoboClean Pro Max X2 (Dòng cao cấp nhất):\n"
+                + "   - Giá bán: 12.990.000đ (Giá gốc: 14.990.000đ).\n"
+                + "   - Thông số: Lực hút cực mạnh 6000Pa, dung lượng pin 5200mAh (hoạt động liên tục tới 180 phút, phù hợp diện tích lớn hoặc nhà nhiều tầng).\n"
+                + "   - Tính năng nổi bật: Trạm sạc đa năng 6-trong-1 tự gom rác (túi chứa bụi 3L dùng 60 ngày mới cần đổ), tự giặt giẻ lau và sấy khô giẻ bằng khí nóng 55°C để chống nấm mốc và mùi hôi, tránh vật cản LiDAR AI 3D siêu nhạy.\n"
+                + "2. RoboClean Standard S1 (Dòng tiêu chuẩn):\n"
+                + "   - Giá bán: 7.990.000đ (Giá gốc: 9.990.000đ).\n"
+                + "   - Thông số: Lực hút 4000Pa, pin 3200mAh (hoạt động liên tục 120 phút, phù hợp căn hộ vừa và nhỏ).\n"
+                + "   - Tính năng nổi bật: Dock sạc cơ bản có tự động gom rác vào túi bụi 2L.\n"
+                + "3. Trạm Sạc Đa Năng RoboDock (Phụ kiện nâng cấp lẻ):\n"
+                + "   - Giá bán: 4.990.000đ. Dành cho khách hàng muốn nâng cấp dock sạc thường thành trạm đa năng.\n\n"
+                + "ƯU ĐÃI & CHÍNH SÁCH BÁN HÀNG:\n"
+                + "- Giảm thêm 10% cho đơn hàng đầu tiên khi đăng ký nhận bản tin email ở chân trang web.\n"
+                + "- Miễn phí vận chuyển quốc nội.\n"
+                + "- Bảo hành chính hãng 24 tháng, lỗi 1 đổi 1 trong vòng 30 ngày đầu tiên.\n\n"
+                + "HƯỚNG DẪN CƯ XỬ & TRẢ LỜI:\n"
+                + "- Nói chuyện tự nhiên, lịch sự, xưng hô 'Dạ, em chào anh/chị' hoặc 'RoboClean xin chào'. Sử dụng ngôn từ ấm áp, chuyên nghiệp.\n"
+                + "- Khi khách hỏi về so sánh, tư vấn chọn máy: Phân tích dựa trên nhu cầu của họ (ví dụ: nhà có nuôi thú cưng, nhiều tóc rụng, nhà rộng hay nhiều tầng thì khuyên dùng Pro Max X2 nhờ lực hút mạnh 6000Pa và pin trâu; nhà nhỏ căn hộ chung cư thì Standard S1 là tiết kiệm và đủ dùng).\n"
+                + "- Trả lời ngắn gọn, súc tích (dưới 4 câu), tập trung thẳng vào câu hỏi, tránh dài dòng lan man.\n"
+                + "- TUYỆT ĐỐI không bịa đặt hoặc tự chế các thông số kỹ thuật (như lực hút khác, dung tích nước, các tính năng tự vẽ bản đồ 3D khác) nằm ngoài thông tin được cung cấp ở trên.";
 
         URL url = URI.create("https://openrouter.ai/api/v1/chat/completions").toURL();
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -76,19 +96,33 @@ public class ChatController {
         conn.setRequestProperty("X-Title", "RoboClean Client");
         conn.setDoOutput(true);
 
+        // Retrieve or initialize conversation history list for this session
+        List<Map<String, String>> history = chatHistories.computeIfAbsent(sessionId, k -> new ArrayList<>());
+
         // Build standard chat completion payload: { model, messages: [ {role, content} ] }
         Map<String, Object> payload = new HashMap<>();
         payload.put("model", openrouterModel);
 
+        List<Map<String, String>> messagesList = new ArrayList<>();
+        
+        // System Prompt message
         Map<String, String> systemMsg = new HashMap<>();
         systemMsg.put("role", "system");
         systemMsg.put("content", systemPrompt);
+        messagesList.add(systemMsg);
 
+        // Append historical turns
+        synchronized (history) {
+            messagesList.addAll(history);
+        }
+
+        // Append current user message
         Map<String, String> userMsg = new HashMap<>();
         userMsg.put("role", "user");
         userMsg.put("content", userMessage);
+        messagesList.add(userMsg);
 
-        payload.put("messages", new Object[]{systemMsg, userMsg});
+        payload.put("messages", messagesList);
 
         String jsonPayload = objectMapper.writeValueAsString(payload);
 
@@ -108,7 +142,28 @@ public class ChatController {
                         .path("content");
                 
                 if (!replyNode.isMissingNode()) {
-                    return replyNode.asText().trim();
+                    String botReply = replyNode.asText().trim();
+                    
+                    // Save current user turn & assistant response to history
+                    synchronized (history) {
+                        Map<String, String> uMsg = new HashMap<>();
+                        uMsg.put("role", "user");
+                        uMsg.put("content", userMessage);
+                        
+                        Map<String, String> aMsg = new HashMap<>();
+                        aMsg.put("role", "assistant");
+                        aMsg.put("content", botReply);
+                        
+                        history.add(uMsg);
+                        history.add(aMsg);
+                        
+                        // Limit history queue size to 16 items (8 turns) to save token context
+                        if (history.size() > 16) {
+                            history.subList(0, history.size() - 16).clear();
+                        }
+                    }
+                    
+                    return botReply;
                 }
             }
         } else {

@@ -10,6 +10,18 @@ interface Message {
   text: string;
 }
 
+const parseMarkdown = (text: string) => {
+  if (!text) return "";
+  // Escape HTML tags to prevent XSS vulnerabilities
+  const escaped = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+    
+  // Format **bold** to high-contrast strong elements
+  return escaped.replace(/\*\*(.*?)\*\*/g, "<strong class='font-extrabold text-brand-primary dark:text-brand-primary'>$1</strong>");
+};
+
 export const ChatWidget = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [showBalloon, setShowBalloon] = React.useState(false);
@@ -60,6 +72,8 @@ export const ChatWidget = () => {
             target: "chat-widget-icon",
             metadata: { timestamp: new Date().toISOString() },
           }),
+        }).catch(() => {
+          // Silently absorb tracking API connectivity warnings
         });
       } catch (err) {
         // ignore
@@ -188,14 +202,13 @@ export const ChatWidget = () => {
                     {msg.sender === "USER" ? <User className="h-3.5 w-3.5" /> : <Bot className="h-3.5 w-3.5" />}
                   </div>
                   <div
-                    className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                    className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${
                       msg.sender === "USER"
                         ? "bg-brand-primary text-slate-950 font-medium"
                         : "bg-surface border border-border text-text-primary shadow-sm"
                     }`}
-                  >
-                    {msg.text}
-                  </div>
+                    dangerouslySetInnerHTML={{ __html: parseMarkdown(msg.text) }}
+                  />
                 </div>
               ))}
 

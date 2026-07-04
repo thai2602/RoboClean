@@ -43,7 +43,7 @@ export const useTracking = () => {
           body: JSON.stringify(payload),
         });
       } catch (err) {
-        console.error("[Tracking] Failed to post telemetry: ", err);
+        console.warn("[Tracking] Backend telemetry endpoint offline.");
       }
     },
     [sessionId]
