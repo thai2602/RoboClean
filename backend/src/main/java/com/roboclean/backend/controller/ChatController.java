@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/chat")
+@RequestMapping({"/api/v1/chat", "/chat"})
 public class ChatController {
 
     @Value("${OPENROUTER_API_KEY:}")

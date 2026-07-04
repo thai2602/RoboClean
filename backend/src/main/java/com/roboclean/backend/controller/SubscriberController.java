@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @RestController
-@RequestMapping("/api/v1/subscribers")
+@RequestMapping({"/api/v1/subscribers", "/subscribers"})
 public class SubscriberController {
 
     @Autowired
