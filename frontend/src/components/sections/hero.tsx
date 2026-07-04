@@ -140,7 +140,7 @@ export const Hero = () => {
             >
               <div className="relative h-full w-full overflow-hidden rounded-full bg-card shadow-inner">
                 <Image
-                  src="/images/roboclean_hero.png"
+                  src="/images/roboclean_hero.webp"
                   alt="RoboClean Pro Smart Vacuum"
                   fill
                   priority
