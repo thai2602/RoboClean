@@ -41,17 +41,17 @@ export const Hero = () => {
   };
 
   return (
-    <section ref={containerRef} className="relative overflow-hidden bg-background py-20 lg:py-32">
+    <section ref={containerRef} className="relative overflow-hidden bg-background py-10 lg:py-0 lg:h-[calc(100vh-4rem)] lg:min-h-[620px] flex items-center">
       {/* Background Gradient Lights */}
       <div className="absolute top-0 left-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-brand-primary/10 blur-[120px] dark:bg-brand-primary/5" />
       <div className="absolute right-1/4 bottom-0 -z-10 h-[500px] w-[500px] rounded-full bg-brand-secondary/10 blur-[120px] dark:bg-brand-secondary/5" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
           
           {/* Left Column: Text Content */}
           <motion.div
-            className="flex flex-col items-start text-left space-y-8"
+            className="flex flex-col items-start text-left space-y-6"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -67,7 +67,7 @@ export const Hero = () => {
             {/* Main Headline */}
             <motion.h1
               variants={itemVariants}
-              className="text-4xl sm:text-6xl font-extrabold tracking-tight text-text-primary leading-tight"
+              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-text-primary leading-tight"
             >
               ROBOCLEAN PRO <br />
               <span className="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
@@ -78,7 +78,7 @@ export const Hero = () => {
             {/* Description */}
             <motion.p
               variants={itemVariants}
-              className="text-lg text-text-secondary max-w-lg leading-relaxed"
+              className="text-base sm:text-lg text-text-secondary max-w-lg leading-relaxed"
             >
               Trải nghiệm dòng robot hút bụi lau nhà thông minh thế hệ mới tích hợp trạm sạc đa năng 6-trong-1. Quét bản đồ LiDAR AI 3D, lực hút 6000Pa cực mạnh, tự giặt & sấy khô giẻ lau. Giải phóng đôi tay của bạn hoàn toàn!
             </motion.p>
@@ -136,7 +136,7 @@ export const Hero = () => {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="relative h-[300px] w-[300px] sm:h-[450px] sm:w-[450px] overflow-hidden rounded-full border border-border bg-gradient-to-tr from-brand-primary/10 to-brand-secondary/10 p-6 dark:border-white/5 shadow-2xl"
+              className="relative h-[280px] w-[280px] sm:h-[400px] sm:w-[400px] lg:h-[380px] lg:w-[380px] xl:h-[450px] xl:w-[450px] overflow-hidden rounded-full border border-border bg-gradient-to-tr from-brand-primary/10 to-brand-secondary/10 p-6 dark:border-white/5 shadow-2xl"
             >
               <div className="relative h-full w-full overflow-hidden rounded-full bg-card shadow-inner">
                 <Image

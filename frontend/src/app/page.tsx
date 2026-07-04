@@ -4,12 +4,33 @@ import { Navbar } from "@/components/sections/navbar";
 import { Hero } from "@/components/sections/hero";
 import { Features } from "@/components/sections/features";
 import { Products } from "@/components/sections/products";
-import { Specifications } from "@/components/sections/specifications";
-import { Reviews } from "@/components/sections/reviews";
-import { FAQ } from "@/components/sections/faq";
-import { Newsletter } from "@/components/sections/newsletter";
-import { Footer } from "@/components/sections/footer";
-import { ChatWidget } from "@/components/sections/chat-widget";
+import dynamic from "next/dynamic";
+
+const Specifications = dynamic(
+  () => import("@/components/sections/specifications").then((mod) => mod.Specifications),
+  { ssr: false }
+);
+const Reviews = dynamic(
+  () => import("@/components/sections/reviews").then((mod) => mod.Reviews),
+  { ssr: false }
+);
+const FAQ = dynamic(
+  () => import("@/components/sections/faq").then((mod) => mod.FAQ),
+  { ssr: false }
+);
+const Newsletter = dynamic(
+  () => import("@/components/sections/newsletter").then((mod) => mod.Newsletter),
+  { ssr: false }
+);
+const Footer = dynamic(
+  () => import("@/components/sections/footer").then((mod) => mod.Footer),
+  { ssr: false }
+);
+const ChatWidget = dynamic(
+  () => import("@/components/sections/chat-widget").then((mod) => mod.ChatWidget),
+  { ssr: false }
+);
+
 import { SEOSchema } from "@/components/seo-schema";
 import { useTracking } from "@/hooks/use-tracking";
 
