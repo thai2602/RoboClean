@@ -1,10 +1,10 @@
-# 🧹 RoboClean - Premium Fullstack Smart Vacuum Robot Landing Page
+# RoboClean - Premium Fullstack Smart Vacuum Robot Landing Page
 
 Trang Landing Page giới thiệu thiết bị thông minh **RoboClean** kết hợp trải nghiệm thiết kế cuộn kể chuyện (**Scrollytelling**), hiệu ứng chuyển động **Framer Motion**, cùng hệ thống quản lý **Mini Ecommerce (Zustand)**, **Chatbot AI Advisor (OpenRouter API)** và **Behaviour Telemetry Tracking (Spring Boot & Webhooks)** kết nối cơ sở dữ liệu **PostgreSQL**.
 
 ---
 
-## 🚀 Tính Năng Nổi Bật
+##  Tính Năng Nổi Bật
 
 ### 1. Trải nghiệm UI/UX Kể Chuyện (Scrollytelling & Motion)
 * **Parallax Scroll & Centered Hero:** Hiệu ứng cuộn dịch chuyển ảnh Robot 3D nổi bật theo chiều cuộn trang. Chiều cao trang đầu (Hero) được khóa động theo chiều cao màn hình `calc(100vh - 4rem)` giúp căn giữa hoàn hảo và không bị tràn nút bấm.
@@ -29,7 +29,7 @@ Trang Landing Page giới thiệu thiết bị thông minh **RoboClean** kết h
 
 ---
 
-## ⚡ Tối Ưu Hóa Hiệu Năng (Lighthouse Performance)
+## Tối Ưu Hóa Hiệu Năng (Lighthouse Performance)
 
 * **Preconnect Origins:** Bổ sung thẻ kết nối sớm `<link rel="preconnect">` tới đầu cuối API `https://roboclean.onrender.com` giúp tiết kiệm **300ms** thời gian phân giải DNS/bắt tay SSL.
 * **WebP Image Migration:** Nén và chuyển đổi các hình ảnh PNG thô nặng hơn 500KB sang định dạng WebP siêu nhẹ chỉ khoảng **40-60KB** (tiết kiệm **90% dung lượng**), đẩy tốc độ tải ảnh LCP lên tối đa.
@@ -73,7 +73,7 @@ RoboClean/
 
 ---
 
-## 🏃 Hướng Dẫn Khởi Chạy Dự Án
+## Hướng Dẫn Khởi Chạy Dự Án
 
 ### 1. Thiết lập Biến Môi Trường (Environment Variables)
 
@@ -115,8 +115,3 @@ npm run dev
 * Trang web sẽ khởi chạy tại: `http://localhost:3000` hoặc deploy trực tiếp lên Vercel.
 
 ---
-
-## 🚀 Hướng Dẫn Triển Khai (Deployment)
-
-Chi tiết quy trình cấu hình tự động đẩy code và triển khai lên môi trường sản xuất (**Vercel** cho Frontend, **Render** cho Backend và **Neon.tech** cho PostgreSQL Cloud) đã được viết chi tiết tại:
-* 📑 [docs/deployment.md](file:///c:/WorkSpace/Web/RoboClean/docs/deployment.md)
