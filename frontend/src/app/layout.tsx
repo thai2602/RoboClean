@@ -60,7 +60,7 @@ export default function RootLayout({
   return (
     <html lang="vi" suppressHydrationWarning className={`${outfit.variable} ${inter.variable} h-full antialiased`}>
       <head>
-        <link rel="preconnect" href="https://roboclean.onrender.com" />
+        <link rel="preconnect" href="https://roboclean.onrender.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://roboclean.onrender.com" />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">

@@ -50,57 +50,37 @@ export const Hero = () => {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
           
           {/* Left Column: Text Content */}
-          <motion.div
-            className="flex flex-col items-start text-left space-y-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          <div className="flex flex-col items-start text-left space-y-6">
             {/* Tagline */}
-            <motion.div
-              variants={itemVariants}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-primary/20 bg-brand-primary/5 text-xs font-semibold tracking-wider uppercase text-brand-primary"
-            >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-primary/20 bg-brand-primary/5 text-xs font-semibold tracking-wider uppercase text-brand-primary">
               <Zap className="h-3 w-3" /> Bản giới hạn - Pro Edition
-            </motion.div>
+            </div>
 
             {/* Main Headline */}
-            <motion.h1
-              variants={itemVariants}
-              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-text-primary leading-tight"
-            >
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-text-primary leading-tight">
               ROBOCLEAN PRO <br />
               <span className="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
                 ĐỊNH NGHĨA SẠCH SẼ MỚI
               </span>
-            </motion.h1>
+            </h1>
 
             {/* Description */}
-            <motion.p
-              variants={itemVariants}
-              className="text-base sm:text-lg text-text-secondary max-w-lg leading-relaxed"
-            >
+            <p className="text-base sm:text-lg text-text-secondary max-w-lg leading-relaxed">
               Trải nghiệm dòng robot hút bụi lau nhà thông minh thế hệ mới tích hợp trạm sạc đa năng 6-trong-1. Quét bản đồ LiDAR AI 3D, lực hút 6000Pa cực mạnh, tự giặt & sấy khô giẻ lau. Giải phóng đôi tay của bạn hoàn toàn!
-            </motion.p>
+            </p>
 
             {/* Trust Badges */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap gap-4 text-xs font-medium text-text-secondary"
-            >
+            <div className="flex flex-wrap gap-4 text-xs font-medium text-text-secondary">
               <span className="flex items-center gap-1">
                 <ShieldCheck className="h-4 w-4 text-brand-success" /> Bảo hành chính hãng 24 tháng
               </span>
               <span className="flex items-center gap-1">
                 <ShieldCheck className="h-4 w-4 text-brand-success" /> Miễn phí vận chuyển toàn quốc
               </span>
-            </motion.div>
+            </div>
 
             {/* CTA Buttons */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
-            >
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <Button
                 variant="primary"
                 size="lg"
@@ -118,8 +98,8 @@ export const Hero = () => {
               >
                 Xem thông số kỹ thuật
               </Button>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* Right Column: Visual Product */}
           <motion.div
