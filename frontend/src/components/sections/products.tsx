@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Heart, ShoppingCart, Star } from "lucide-react";
+import { Heart, ShoppingCart, Star, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { useCartStore } from "@/store/cart-store";
@@ -11,6 +12,7 @@ import { useRecentlyViewedStore } from "@/store/recently-viewed-store";
 
 export const Products = () => {
   const [mounted, setMounted] = React.useState(false);
+  const [selectedProduct, setSelectedProduct] = React.useState<any>(null);
 
   const addItem = useCartStore((state) => state.addItem);
   const { toggleWishlist, hasItem } = useWishlistStore();
@@ -140,7 +142,7 @@ export const Products = () => {
 
                 {/* Product Visual */}
                 <div
-                  onClick={() => handleCardInteraction(product)}
+                  onClick={() => { setSelectedProduct(product); handleCardInteraction(product); }}
                   className="relative aspect-square w-full overflow-hidden rounded-2xl bg-surface p-4 mb-6 flex justify-center items-center border border-border/50 cursor-pointer"
                 >
                   <Image
@@ -170,7 +172,7 @@ export const Products = () => {
 
                     {/* Title */}
                     <h3
-                      onClick={() => handleCardInteraction(product)}
+                      onClick={() => { setSelectedProduct(product); handleCardInteraction(product); }}
                       className="text-xl font-bold text-text-primary mb-2 group-hover:text-brand-primary transition-colors cursor-pointer"
                     >
                       {product.name}
@@ -242,6 +244,142 @@ export const Products = () => {
         )}
 
       </div>
+
+      {/* Product Detail Modal */}
+      <AnimatePresence>
+        {selectedProduct && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedProduct(null)}
+              className="fixed inset-0 z-50 bg-black backdrop-blur-sm"
+            />
+
+            {/* Modal Container */}
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="relative w-full max-w-3xl bg-white dark:bg-slate-950 rounded-3xl border border-border p-6 sm:p-8 shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8"
+              >
+                {/* Close Button */}
+                <button
+                  onClick={() => setSelectedProduct(null)}
+                  className="absolute top-4 right-4 p-2 rounded-full border border-border bg-slate-50 dark:bg-slate-900 text-text-secondary hover:text-text-primary transition-all focus:outline-none cursor-pointer"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+
+                {/* Left Side: Product Image */}
+                <div className="w-full md:w-1/2 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-border/50 p-6 flex items-center justify-center aspect-square">
+                  <div className="relative w-full h-full min-h-[250px]">
+                    <Image
+                      src={selectedProduct.image || selectedProduct.imageUrl}
+                      alt={selectedProduct.name}
+                      fill
+                      className="object-contain p-4"
+                    />
+                  </div>
+                </div>
+
+                {/* Right Side: Product Details */}
+                <div className="w-full md:w-1/2 flex flex-col justify-between">
+                  <div className="space-y-4">
+                    {/* SKU & Rating */}
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold tracking-wider text-text-secondary uppercase">
+                        SKU: {selectedProduct.sku}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 text-brand-accent fill-brand-accent" />
+                        <span className="text-xs text-text-primary font-bold">{selectedProduct.rating || 5}.0</span>
+                      </div>
+                    </div>
+
+                    {/* Name */}
+                    <h3 className="text-2xl sm:text-3xl font-extrabold text-text-primary leading-tight">
+                      {selectedProduct.name}
+                    </h3>
+
+                    {/* Price */}
+                    <div className="flex items-baseline gap-3">
+                      <span className="text-3xl font-extrabold text-brand-primary">
+                        {formatPrice(selectedProduct.price)}
+                      </span>
+                      {selectedProduct.originalPrice && (
+                        <span className="text-sm text-text-secondary line-through font-light">
+                          {formatPrice(selectedProduct.originalPrice)}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-sm text-text-secondary leading-relaxed">
+                      {selectedProduct.description}
+                    </p>
+
+                    {/* Specifications */}
+                    {selectedProduct.specifications && (
+                      <div className="border-t border-border pt-4">
+                        <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider mb-2">
+                          Thông số kỹ thuật:
+                        </h4>
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          {Object.entries(
+                            typeof selectedProduct.specifications === "string"
+                              ? JSON.parse(selectedProduct.specifications)
+                              : selectedProduct.specifications
+                          ).map(([key, val]: [string, any]) => {
+                            const specNames: Record<string, string> = {
+                              suctionPower: "Lực hút",
+                              battery: "Dung lượng pin",
+                              dustbinCapacity: "Hộp chứa bụi",
+                              waterTank: "Khay chứa nước",
+                              compatibility: "Tương thích",
+                              dustbag: "Túi rác",
+                              tank: "Bình chứa nước"
+                            };
+                            return (
+                              <div key={key} className="flex flex-col bg-slate-50 dark:bg-slate-900 p-2 rounded-xl border border-border/30">
+                                <span className="text-[10px] text-text-secondary font-medium uppercase">{specNames[key] || key}</span>
+                                <span className="font-bold text-text-primary mt-0.5">{val}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Add to Cart Button */}
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      addItem({
+                        id: selectedProduct.id,
+                        name: selectedProduct.name,
+                        price: selectedProduct.price,
+                        sku: selectedProduct.sku,
+                        image: selectedProduct.image || selectedProduct.imageUrl,
+                      });
+                      setSelectedProduct(null);
+                    }}
+                    className="w-full gap-2 py-3 mt-6"
+                  >
+                    <ShoppingCart className="h-5 w-5" />
+                    Thêm vào giỏ hàng
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

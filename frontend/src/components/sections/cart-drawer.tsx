@@ -48,10 +48,10 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
-            className="fixed right-0 top-0 bottom-0 z-50 w-full max-w-md border-l border-border bg-card shadow-2xl flex flex-col justify-between"
+            className="fixed right-0 top-0 bottom-0 z-50 w-full max-w-md border-l border-border bg-white dark:bg-slate-950 shadow-2xl flex flex-col justify-between"
           >
             {/* Drawer Header */}
-            <div className="flex items-center justify-between border-b border-border p-6 bg-surface">
+            <div className="flex items-center justify-between border-b border-border p-6 bg-slate-50 dark:bg-slate-900">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="h-5 w-5 text-brand-primary" />
                 <h2 className="text-xl font-bold text-text-primary">Giỏ Hàng</h2>
@@ -72,7 +72,7 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
               {items.length === 0 ? (
                 /* Empty Cart State */
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
-                  <div className="rounded-full bg-border/20 p-6">
+                  <div className="rounded-full bg-slate-100 dark:bg-slate-900 p-6">
                     <ShoppingBag className="h-12 w-12 text-text-secondary/50" />
                   </div>
                   <h3 className="text-lg font-bold text-text-primary">Giỏ hàng của bạn đang trống</h3>
@@ -89,7 +89,7 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                   {items.map((item) => (
                     <div key={item.id} className="flex gap-4 py-4 first:pt-0 last:pb-0">
                       {/* Product Image */}
-                      <div className="relative h-20 w-20 bg-surface rounded-xl p-1 flex items-center justify-center border border-border/50 flex-shrink-0">
+                      <div className="relative h-20 w-20 bg-slate-50 dark:bg-slate-900 rounded-xl p-1 flex items-center justify-center border border-border/50 flex-shrink-0">
                         <Image src={item.image} alt={item.name} width={60} height={60} className="object-contain" />
                       </div>
 
@@ -103,10 +103,10 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
 
                         {/* Quantity controls */}
                         <div className="flex items-center justify-between mt-2">
-                          <div className="flex items-center border border-border rounded-lg bg-surface">
+                          <div className="flex items-center border border-border rounded-lg bg-slate-50 dark:bg-slate-900">
                             <button
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              className="p-1 hover:text-brand-primary focus:outline-none"
+                              className="p-1.5 hover:text-brand-primary focus:outline-none"
                             >
                               <Minus className="h-3 w-3" />
                             </button>
@@ -115,7 +115,7 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                             </span>
                             <button
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="p-1 hover:text-brand-primary focus:outline-none"
+                              className="p-1.5 hover:text-brand-primary focus:outline-none"
                             >
                               <Plus className="h-3 w-3" />
                             </button>
@@ -138,7 +138,7 @@ export const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
 
             {/* Drawer Footer Details */}
             {items.length > 0 && (
-              <div className="border-t border-border p-6 bg-surface space-y-4 shadow-[0_-8px_24px_rgba(0,0,0,0.03)]">
+              <div className="border-t border-border p-6 bg-slate-50 dark:bg-slate-900 space-y-4 shadow-[0_-8px_24px_rgba(0,0,0,0.03)]">
                 <div className="flex justify-between items-baseline">
                   <span className="text-sm text-text-secondary font-medium">Tổng tiền tạm tính:</span>
                   <span className="text-2xl font-extrabold text-brand-primary">{formatPrice(getTotalPrice())}</span>
