@@ -32,8 +32,8 @@ COPY --from=build /app/target/backend-0.0.1-SNAPSHOT.jar app.jar
 ENV PORT=8080
 EXPOSE 8080
 
-# Các tham số tối ưu hóa bộ nhớ JVM cho môi trường Container
-ENV JAVA_OPTS="-Dfile.encoding=UTF-8 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxRAMPercentage=75.0"
+# Các tham số tối ưu hóa bộ nhớ JVM cho môi trường Container và tránh đơ do thiếu entropy
+ENV JAVA_OPTS="-Dfile.encoding=UTF-8 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom"
 
 # Khởi chạy ứng dụng
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=$PORT -jar app.jar"]
