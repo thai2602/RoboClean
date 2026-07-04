@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Heart, ShoppingCart, Star, X } from "lucide-react";
+import { Heart, ShoppingCart, Star, X, Wind, Battery, Trash2, Droplets, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
@@ -92,6 +92,10 @@ export const Products = () => {
       price: product.price,
       sku: product.sku,
       image: product.image || product.imageUrl,
+      description: product.description,
+      originalPrice: product.originalPrice,
+      rating: product.rating,
+      specifications: product.specifications,
     });
   };
 
@@ -150,6 +154,7 @@ export const Products = () => {
                     alt={product.name}
                     width={300}
                     height={300}
+                    priority={idx < 3}
                     className="object-contain scale-90 transition-transform duration-500 group-hover:scale-100"
                   />
                 </div>
@@ -228,14 +233,15 @@ export const Products = () => {
               {recentlyViewed.map((product) => (
                 <div
                   key={`viewed-${product.id}`}
-                  className="flex items-center gap-4 min-w-[280px] p-3 rounded-2xl border border-border bg-card hover:border-brand-primary/20 transition-all flex-shrink-0"
+                  onClick={() => setSelectedProduct(product)}
+                  className="group flex items-center gap-4 min-w-[280px] p-3 rounded-2xl border border-border bg-card hover:border-brand-primary/20 hover:shadow-md hover:-translate-y-0.5 transition-all flex-shrink-0 cursor-pointer active:scale-95"
                 >
                   <div className="relative h-16 w-16 bg-surface rounded-xl p-1 flex items-center justify-center border border-border/50 flex-shrink-0">
                     <Image src={product.image} alt={product.name} width={50} height={50} className="object-contain" />
                   </div>
                   <div>
-                    <p className="font-semibold text-sm text-text-primary line-clamp-1">{product.name}</p>
-                    <p className="text-xs text-brand-primary font-bold">{formatPrice(product.price)}</p>
+                    <p className="font-semibold text-sm text-text-primary line-clamp-1 group-hover:text-brand-primary transition-colors">{product.name}</p>
+                    <p className="text-xs text-brand-primary font-bold mt-0.5">{formatPrice(product.price)}</p>
                   </div>
                 </div>
               ))}
@@ -265,46 +271,59 @@ export const Products = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="relative w-full max-w-3xl bg-white dark:bg-slate-950 rounded-3xl border border-border p-6 sm:p-8 shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8"
+                className="relative w-full max-w-3xl bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8"
               >
                 {/* Close Button */}
                 <button
                   onClick={() => setSelectedProduct(null)}
-                  className="absolute top-4 right-4 p-2 rounded-full border border-border bg-slate-50 dark:bg-slate-900 text-text-secondary hover:text-text-primary transition-all focus:outline-none cursor-pointer"
+                  className="absolute top-4 right-4 p-2 rounded-full border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-all focus:outline-none cursor-pointer"
                 >
                   <X className="h-5 w-5" />
                 </button>
 
                 {/* Left Side: Product Image */}
-                <div className="w-full md:w-1/2 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-border/50 p-6 flex items-center justify-center aspect-square">
+                <div className="w-full md:w-1/2 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-800/50 p-6 flex items-center justify-center aspect-square">
                   <div className="relative w-full h-full min-h-[250px]">
                     <Image
                       src={selectedProduct.image || selectedProduct.imageUrl}
                       alt={selectedProduct.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, 350px"
                       className="object-contain p-4"
                     />
                   </div>
                 </div>
 
                 {/* Right Side: Product Details */}
-                <div className="w-full md:w-1/2 flex flex-col justify-between">
+                <div className="w-full md:w-1/2 flex flex-col justify-between md:pt-4">
                   <div className="space-y-4">
                     {/* SKU & Rating */}
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold tracking-wider text-text-secondary uppercase">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase">
                         SKU: {selectedProduct.sku}
                       </span>
+                      <span className="h-3 w-px bg-slate-200 dark:bg-slate-800" />
                       <div className="flex items-center gap-1">
                         <Star className="h-4 w-4 text-brand-accent fill-brand-accent" />
-                        <span className="text-xs text-text-primary font-bold">{selectedProduct.rating || 5}.0</span>
+                        <span className="text-xs text-slate-900 dark:text-slate-100 font-bold">{selectedProduct.rating || 5}.0</span>
                       </div>
                     </div>
 
                     {/* Name */}
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-text-primary leading-tight">
+                    <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white leading-tight">
                       {selectedProduct.name}
                     </h3>
+
+                    {/* Trust Badges */}
+                    <div className="flex flex-wrap gap-2 text-[10px] font-semibold">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
+                        <ShieldCheck className="h-3 w-3" />
+                        Chính Hãng 100%
+                      </span>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-brand-success/10 text-brand-success border border-brand-success/20">
+                        Bảo Hành 24 Tháng
+                      </span>
+                    </div>
 
                     {/* Price */}
                     <div className="flex items-baseline gap-3">
@@ -312,21 +331,21 @@ export const Products = () => {
                         {formatPrice(selectedProduct.price)}
                       </span>
                       {selectedProduct.originalPrice && (
-                        <span className="text-sm text-text-secondary line-through font-light">
+                        <span className="text-sm text-slate-400 dark:text-slate-500 line-through font-light">
                           {formatPrice(selectedProduct.originalPrice)}
                         </span>
                       )}
                     </div>
 
                     {/* Description */}
-                    <p className="text-sm text-text-secondary leading-relaxed">
+                    <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                       {selectedProduct.description}
                     </p>
 
                     {/* Specifications */}
                     {selectedProduct.specifications && (
-                      <div className="border-t border-border pt-4">
-                        <h4 className="text-xs font-bold text-text-primary uppercase tracking-wider mb-2">
+                      <div className="border-t border-slate-200 dark:border-slate-800 pt-4">
+                        <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-2.5">
                           Thông số kỹ thuật:
                         </h4>
                         <div className="grid grid-cols-2 gap-2 text-xs">
@@ -344,10 +363,33 @@ export const Products = () => {
                               dustbag: "Túi rác",
                               tank: "Bình chứa nước"
                             };
+
+                            const getSpecIcon = (key: string) => {
+                              switch (key) {
+                                case "suctionPower":
+                                  return <Wind className="h-3.5 w-3.5 text-brand-primary" />;
+                                case "battery":
+                                  return <Battery className="h-3.5 w-3.5 text-brand-success" />;
+                                case "dustbinCapacity":
+                                case "dustbag":
+                                  return <Trash2 className="h-3.5 w-3.5 text-brand-danger" />;
+                                case "waterTank":
+                                case "tank":
+                                  return <Droplets className="h-3.5 w-3.5 text-brand-secondary" />;
+                                default:
+                                  return <ShieldCheck className="h-3.5 w-3.5 text-brand-accent" />;
+                              }
+                            };
+
                             return (
-                              <div key={key} className="flex flex-col bg-slate-50 dark:bg-slate-900 p-2 rounded-xl border border-border/30">
-                                <span className="text-[10px] text-text-secondary font-medium uppercase">{specNames[key] || key}</span>
-                                <span className="font-bold text-text-primary mt-0.5">{val}</span>
+                              <div key={key} className="flex items-center gap-2.5 bg-slate-50 dark:bg-slate-800/80 p-2.5 rounded-xl border border-slate-200/40 dark:border-slate-800/40">
+                                <div className="p-1.5 bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200/50 dark:border-slate-800/60 flex-shrink-0">
+                                  {getSpecIcon(key)}
+                                </div>
+                                <div className="flex flex-col min-w-0">
+                                  <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wide truncate">{specNames[key] || key}</span>
+                                  <span className="font-bold text-slate-900 dark:text-slate-100 mt-0.5 truncate">{val}</span>
+                                </div>
                               </div>
                             );
                           })}

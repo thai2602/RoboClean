@@ -7,6 +7,10 @@ export interface ViewedItem {
   price: number;
   sku: string;
   image: string;
+  description?: string;
+  originalPrice?: number;
+  rating?: number;
+  specifications?: any;
 }
 
 interface RecentlyViewedState {
@@ -20,8 +24,8 @@ export const useRecentlyViewedStore = create<RecentlyViewedState>()(
       items: [],
       addViewedItem: (product) => {
         const items = get().items;
-        // Filter out duplicate if it exists, to place it at the beginning of the list
-        const filtered = items.filter((item) => item.id !== product.id);
+        // Filter out duplicate if it exists by checking both ID and Name (prevents static/API duplication)
+        const filtered = items.filter((item) => item.id !== product.id && item.name !== product.name);
         
         // Add to beginning and limit to 5 items
         const updated = [product, ...filtered].slice(0, 5);
