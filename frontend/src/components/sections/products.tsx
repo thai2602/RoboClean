@@ -154,7 +154,6 @@ export const Products = () => {
                     alt={product.name}
                     width={300}
                     height={300}
-                    priority={idx < 3}
                     className="object-contain scale-90 transition-transform duration-500 group-hover:scale-100"
                   />
                 </div>
