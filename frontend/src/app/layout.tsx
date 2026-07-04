@@ -6,13 +6,13 @@ import "./globals.css";
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["600", "700", "800"],
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -57,6 +57,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi" suppressHydrationWarning className={`${outfit.variable} ${inter.variable} h-full antialiased`}>
+      <head>
+        <link rel="preconnect" href="https://roboclean.onrender.com" />
+        <link rel="dns-prefetch" href="https://roboclean.onrender.com" />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <ThemeProvider
           attribute="class"
